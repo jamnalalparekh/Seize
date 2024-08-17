@@ -30,14 +30,26 @@ body {
     resize: vertical;
 }
 
-.details {
-    margin-top: 20px;
+.search-container {
+    margin-top: 30px;
 }
 
-.image-preview {
-    margin-top: 20px;
+.search-container input {
+    padding: 8px;
+    width: 80%;
+    margin-right: 10px;
+    box-sizing: border-box;
 }
 
-h2, h3 {
-    color: #333;
+button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
 }

@@ -1,70 +1,67 @@
-// Example vehicle data (in real application, you would fetch this from a server)
-const vehicleData = {
-    "ABC1234": {
-        customerName: "John Doe",
-        mobileNo: "1234567890",
-        cityVillage: "Sample City",
-        agreementNo: "AG12345",
-        loanDue: "$5000",
-        vehicleNo: "ABC1234",
-        seizeDate: "2024-08-01",
-        dateOfManufacture: "2020-05-20",
-        vehicleValue: "$20000",
-        saleValue: "$18000",
-        remarks: "Seized due to non-payment."
-    },
-    "XYZ5678": {
-        customerName: "Jane Smith",
-        mobileNo: "0987654321",
-        cityVillage: "Example Village",
-        agreementNo: "AG67890",
-        loanDue: "$3000",
-        vehicleNo: "XYZ5678",
-        seizeDate: "2024-07-15",
-        dateOfManufacture: "2019-03-10",
-        vehicleValue: "$15000",
-        saleValue: "$14000",
-        remarks: "Pending auction."
-    }
-};
+let vehicleDetails = [];
 
-// Function to fetch and display vehicle details
-function fetchVehicleDetails() {
-    const vehicleNo = document.getElementById('vehicleNo').value.trim();
-    const detailsDiv = document.getElementById('vehicleDetails');
-    const imagePreviewDiv = document.getElementById('imagePreview');
+function saveVehicleDetails() {
+    const vehicle = {
+        customerName: document.getElementById('customerName').value,
+        mobileNo: document.getElementById('mobileNo').value,
+        cityVillage: document.getElementById('cityVillage').value,
+        agreementNo: document.getElementById('agreementNo').value,
+        loanDue: document.getElementById('loanDue').value,
+        vehicleNo: document.getElementById('vehicleNo').value,
+        seizeDate: document.getElementById('seizeDate').value,
+        dateOfManufacture: document.getElementById('dateOfManufacture').value,
+        vehicleValue: document.getElementById('vehicleValue').value,
+        saleValue: document.getElementById('saleValue').value,
+        remarks: document.getElementById('remarks').value,
+    };
 
-    if (vehicleData[vehicleNo]) {
-        const details = vehicleData[vehicleNo];
-        detailsDiv.innerHTML = `
-            <h3>Details for Vehicle No: ${vehicleNo}</h3>
-            <p><strong>Customer Name:</strong> ${details.customerName}</p>
-            <p><strong>Mobile No:</strong> ${details.mobileNo}</p>
-            <p><strong>City/Village:</strong> ${details.cityVillage}</p>
-            <p><strong>Agreement No:</strong> ${details.agreementNo}</p>
-            <p><strong>Loan Due:</strong> ${details.loanDue}</p>
-            <p><strong>Seize Date:</strong> ${details.seizeDate}</p>
-            <p><strong>Date of Manufacture:</strong> ${details.dateOfManufacture}</p>
-            <p><strong>Vehicle Value:</strong> ${details.vehicleValue}</p>
-            <p><strong>Sale Value:</strong> ${details.saleValue}</p>
-            <p><strong>Remarks:</strong> ${details.remarks}</p>
-        `;
+    // Save the vehicle details to an array
+    vehicleDetails.push(vehicle);
+
+    // Optionally clear the form fields after saving
+    document.getElementById('vehicleForm').reset();
+}
+
+function searchVehicleDetails() {
+    const searchQuery = document.getElementById('searchQuery').value;
+
+    // Find the vehicle by Vehicle Number
+    const result = vehicleDetails.find(vehicle => vehicle.vehicleNo === searchQuery);
+
+    if (result) {
+        // Open a popup window to display the search result
+        const popup = window.open('', 'Vehicle Details', 'width=600,height=400');
+        popup.document.write(`
+            <html>
+            <head>
+                <title>Vehicle Details</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 20px; }
+                    .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
+                    h3 { color: #333; }
+                    p { margin-bottom: 10px; }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h3>Vehicle Details</h3>
+                    <p><strong>Customer Name:</strong> ${result.customerName}</p>
+                    <p><strong>Mobile No:</strong> ${result.mobileNo}</p>
+                    <p><strong>City/Village:</strong> ${result.cityVillage}</p>
+                    <p><strong>Agreement No:</strong> ${result.agreementNo}</p>
+                    <p><strong>Loan Due:</strong> ${result.loanDue}</p>
+                    <p><strong>Vehicle No:</strong> ${result.vehicleNo}</p>
+                    <p><strong>Seize Date:</strong> ${result.seizeDate}</p>
+                    <p><strong>Date of Manufacture:</strong> ${result.dateOfManufacture}</p>
+                    <p><strong>Vehicle Value:</strong> ${result.vehicleValue}</p>
+                    <p><strong>Sale Value:</strong> ${result.saleValue}</p>
+                    <p><strong>Remarks:</strong> ${result.remarks}</p>
+                </div>
+            </body>
+            </html>
+        `);
+        popup.document.close();
     } else {
-        detailsDiv.innerHTML = `<p>No details found for Vehicle No: ${vehicleNo}</p>`;
-    }
-
-    // Handle image upload and preview
-    const vehicleImage = document.getElementById('vehicleImage').files[0];
-    if (vehicleImage) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            imagePreviewDiv.innerHTML = `
-                <h3>Uploaded Vehicle Image:</h3>
-                <img src="${e.target.result}" alt="Vehicle Image" style="max-width: 100%; height: auto;">
-            `;
-        };
-        reader.readAsDataURL(vehicleImage);
-    } else {
-        imagePreviewDiv.innerHTML = '';
+        alert("Vehicle not found!");
     }
 }
